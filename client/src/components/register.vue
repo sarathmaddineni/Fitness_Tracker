@@ -11,13 +11,13 @@ Create Account</h1>
  <div class="field">
  <div class="control">
  <label class="label">First Name</label>
- <input class="input is-info" id="txtfname" name="txtfname" type="text" value="" />
+ <input class="input is-info" id="txtfname" name="txtfname" ref="FirstName" type="text" value="" />
  </div>
 </div>
 <div class="field">
  <div class="control">
  <label class="label">Last Name</label>
- <input class="input is-info" id="txtfname" name="txtfname" type="text" value="" />
+ <input class="input is-info" id="txtfname" name="txtfname" ref="LastName" type="text" value="" />
  </div>
 </div>
 </div>
@@ -27,13 +27,13 @@ Create Account</h1>
  <div class="field">
  <div class="control">
  <label class="label">Email</label>
- <input class="input is-info" id="txtfname" name="txtfname" type="text" value="" />
+ <input class="input is-info" id="txtfname" name="txtfname" ref="Email" type="text" value="" />
  </div>
 </div>
 <div class="field">
  <div class="control">
  <label class="label">Phone Number</label>
- <input class="input is-info" id="txtfname" name="txtfname" type="text" value="" />
+ <input class="input is-info" id="txtfname" name="txtfname" ref="PhoneNumber"  type="text" value="" />
  </div>
 </div>
 </div>
@@ -43,13 +43,13 @@ Create Account</h1>
  <div class="field">
  <div class="control">
  <label class="label">Password</label>
- <input class="input is-info" id="txtfname" name="txtfname" type="text" value="" />
+ <input class="input is-info" id="txtfname" name="txtfname"  ref="Password" type="text" value="" />
  </div>
 </div>
 <div class="field">
  <div class="control">
  <label class="label">Confirm Password</label>
- <input class="input is-info" id="txtfname" name="txtfname" type="text" value="" />
+ <input class="input is-info" id="txtfname" name="txtfname" ref="ConfirmPassword" type="text" value="" />
  </div>
 </div>
 </div>
@@ -63,7 +63,7 @@ Create Account</h1>
 </div>
 <div class="field">
  <div class="control">
- <input class="button is-info is-fullwidth" id="txtfname" name="txtfname" type="submit" value="Sign Up" />
+ <input class="button is-info is-fullwidth" id="txtfname" name="txtfname"  v-on:click="Register" type="button" value="Sign Up" />
  </div>
 </div>
 <div class="field">
@@ -87,3 +87,68 @@ Create Account</h1>
    background-size: cover;
 }
 </style>
+<script>
+import axios from "axios";
+export default {
+  methods:{
+    Register(){
+      var FirstName=this.$refs.FirstName.value;
+      var LastName=this.$refs.LastName.value;
+      var Email=this.$refs.Email.value;
+      var PhoneNumber=this.$refs.PhoneNumber.value;
+      var Password=this.$refs.Password.value;
+      var ConfirmPassword=this.$refs.ConfirmPassword.value;
+       if(FirstName==""){
+        this.$alert("Please enter First Name.");
+        return false;
+      }
+      if(LastName==""){
+        this.$alert("Please enter Last Name.");
+        return false;
+      }
+       if(Email==""){
+        this.$alert("Please enter email.");
+        return false;
+      }
+      if(PhoneNumber==""){
+        this.$alert("Please enter Phone Number.");
+        return false;
+      } 
+      if(Password==""){
+        this.$alert("Please enter password.");
+        return false;
+      }
+      if(ConfirmPassword==""){
+        this.$alert("Please enter confirm password.");
+        return false;
+      }
+      if(Password!=ConfirmPassword){
+        this.$alert("Password and Confirm Password should be same.");
+        return false;
+      }
+      let data = {    
+              FirstName:FirstName,
+              LastName:LastName,
+              Email:Email,
+              PhoneNumber:PhoneNumber,
+              Password:Password  
+           }    
+      axios.post("http://localhost:3000/Register", data)    
+           .then((response) => {    
+               console.log("Logged in"+JSON.stringify(response)) ;  
+               debugger;
+               var res=response;
+               if(res.data.statusCode==200){
+                   this.$alert("User saved successfully...!");
+                   this.$router.push({path: '/login'});
+               }else{
+                   this.$alert("Error in saving user.");
+               }                   
+            })    
+            .catch((errors) => {    
+                console.log("Cannot log in")    
+            }) 
+    }
+  }
+}
+</script>

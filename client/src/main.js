@@ -13,8 +13,16 @@ import VueSimpleAlert from "vue-simple-alert";
 import ViewFriends from "./components/ViewFriends.vue";
 import ViewRequest from "./components/ViewRequest.vue";
 import FindFriends from "./components/FindFriends.vue";
+import '@fortawesome/fontawesome-free/css/all.css'
+import '@fortawesome/fontawesome-free/js/all.js'
+import VueLoading from 'vuejs-loading-plugin';
 
 Vue.use(VueSimpleAlert);
+Vue.use(VueLoading, {
+  dark: true, // default false
+  text: 'Loadind...', // default 'Loading'
+  background: 'rgb(255,255,255)', // set custom background]
+});
 
 require("./assets/main.scss");
 

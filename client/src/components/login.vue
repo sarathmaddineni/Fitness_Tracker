@@ -53,18 +53,13 @@
 }
 </style>
 <script>
+import axios from "axios";
 export default {
     methods: {
     login: function() {
       debugger;
       var emailInput=this.$refs.emailInput.value;
       var passInput=this.$refs.passInput.value;
-      var error=0;
-      var logindata=[
-        {"email": "sample@gmail.com", "password":"12345"},
-        {"email": "test@gmail.com", "password":"12345"},
-        {"email": "fitness@gmail.com", "password":"12345"}
-      ]
       if(emailInput==""){
         this.$alert("Please enter email.");
         this.$refs.emailInput.$el.focus();
@@ -75,19 +70,42 @@ export default {
         this.$refs.passInput.$el.focus();
         return false;
       }
-      for(var i=0;i<logindata.length;i++){
-        if(emailInput==logindata[i].email){
-          if(passInput==logindata[i].password){
-              this.$router.push({path: '/dashbord'});
-              return false;
-          }
-        }else{
-          error++;
-        }
+       if(emailInput=="fitness@gmail.com" && passInput=="12345"){
+        this.$router.push({path: '/AdminDashboard'});
+        return false;
       }
-      if(error>0){
-        this.$alert("User not found.");
-      }
+      let data = {    
+                  email: emailInput,    
+                  password: passInput    
+                }  
+       axios.post("http://localhost:3000/Login", data)    
+           .then((response) => {    
+               console.log("Logged in"+response) ;  
+               debugger;
+               var res=response;
+               if(res.data.statusCode==200){
+                 this.$alert(res.data.msg);
+                 var userData=JSON.stringify(res.data.userData);
+                 sessionStorage.setItem("userData", userData);
+                 this.$router.push({path: '/dashbord'});
+                 return false;
+               }
+               if(res.data.statusCode==203){
+                  this.$alert(res.data.msg);
+                  return false;
+               }
+              if(res.data.statusCode==205){
+                  this.$alert(res.data.msg);
+                  return false;
+               }               
+               if(res.data.statusCode==400){
+                  this.$alert(res.data.msg);
+                  return false;
+               }  
+            })    
+            .catch((errors) => {    
+                console.log("Cannot log in")    
+            })
     }
   }
 }

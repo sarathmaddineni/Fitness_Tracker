@@ -3,7 +3,7 @@
       <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
         <div class="container">
       <div class="navbar-brand">
-          <img src=".././assets/images/mainlogo.jpg" width="85" alt="text" height="28">
+          <router-link to="dashbord"> <img src=".././assets/images/mainlogo.jpg" width="85" alt="text" height="28"></router-link>
         <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
@@ -51,13 +51,13 @@
             <div class="field">
       <label class="label">Title of Exercise</label>
       <div class="control">
-        <input class="input is-info" type="text" placeholder="Text input">
+        <input class="input is-info"  ref="Title" type="text" placeholder="Text input">
       </div>
     </div>
     <div class="field">
       <label class="label">Description</label>
       <div class="control">
-        <textarea class="textarea is-info" placeholder="Textarea"></textarea>
+        <textarea class="textarea is-info"  ref="Desc"  placeholder="Textarea"></textarea>
       </div>
     </div>
     <div class="field">
@@ -65,24 +65,13 @@
       <div class="control">
       <div id="file-js-example" class="file has-name">
       <label class="file-label">
-        <input class="file-input" type="file" name="resume">
-        <span class="file-cta">
-          <span class="file-icon">
-            <i class="fas fa-upload"></i>
-          </span>
-          <span class="file-label">
-            Choose a file…
-          </span>
-        </span>
-        <span class="file-name">
-          No file uploaded
-        </span>
+         <input  @change="uploadImage" type="file" name="photo" accept="image/*">
       </label>
     </div>
       </div>
     </div>
     <div class="field">
-                  <button class="button is-info">
+                  <button class="button is-info"  v-on:click="uploadFitnessData">  
                     Submit
                   </button>
                 </div>
@@ -96,25 +85,25 @@
      
       <div class="card-content">
         <div class="content">
-          <span  v-for="item in data" :key="item.message">
+          <span  v-for="item in postData" :key="item.message">
           <div class="media">
           <div class="media-left">
             <figure class="image is-64x64">
-              <img src=".././assets/images/exercise.jpg" alt="Placeholder image">
+              <img  v-bind:src="item.File" alt="Placeholder image">
             </figure>
           </div>
           <div class="media-content">
-            <p class="title is-4"> {{item.title}}</p>
-            <p class="subtitle is-6">{{item.desc}}</p>
+            <p class="title is-4"> {{item.Title}}</p>
+            <p class="subtitle is-6">{{item.Desc}}</p>
           </div>
          
         </div>
           <div class="columns">
             <div class="column is-6">
-              {{item.uploadedname}}
+              {{item.uploaderName}}
             </div>
             <div class="column is-6">
-              <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+              <time datetime="2016-1-1">{{item.Time}}</time>
             </div>
           </div>
           <hr v-if="item.length!=2">
@@ -137,7 +126,7 @@
               <b>Name</b>
             </div>
             <div class="column is-8">
-              XXXXXXXXX
+              {{profile.FirstName+" "+profile.LastName}}
             </div>
           </div>
           <div class="columns">
@@ -145,7 +134,7 @@
               <b>Email</b>
             </div>
             <div class="column is-8">
-              XXXXXXXXX
+              {{profile.Email}}
             </div>
           </div>
           <div class="columns">
@@ -153,7 +142,7 @@
               <b>Phone</b>
             </div>
             <div class="column is-8">
-              XXXXXXXXX
+             {{profile.Phone}}
             </div>
           </div>
         </div>
@@ -179,31 +168,109 @@
 }
 </style>
 <script>
+function encodeImageFileAsURL(element) {debugger;
+  var file = element.files[0];
+  var reader = new FileReader();
+  reader.onloadend = function() {
+    console.log('RESULT', reader.result)
+  }
+  reader.readAsDataURL(file);
+}
+import axios from "axios";
+var filePath;
 export default {
     data(){
       return {
-        data:  [
-      {
-        "title":"Supermans",
-        "desc":"Who doesn't want to think they have super powers?  Great stretch as well when you picture trying to touch the opposing walls with your fingers and toes.",
-        "img":".././assets/images/exercise.jpg",
-        "uploadedname":"sample"
-      },
-       {
-        "title":"Push-up",
-        "desc":"The Push-up is an oldie but goodie.  You can modify intensity by changing hand placement.",
-        "img":".././assets/images/exercise.jpg",
-        "uploadedname":"test"
-      },
-       {
-        "title":"Contralateral Limb Raises",
-        "desc":"Don’t let the name scare you – this is great for toning those troubling upper body areas.",
-        "img":".././assets/images/exercise.jpg",
-        "uploadedname":"sample"
+       profile:null,
+        fileBase64: null,
+        postData:  null
       }
-    ]
+    },
+     created(){
+     // debugger;
+     this.getAllPostData();            
+    },
+     methods:{
+      getAllPostData: function(){
+         this.profile=JSON.parse(sessionStorage.getItem("userData"));
+      //  axios.get("http://localhost:3000/getAllFitnessPosts")    
+      //      .then((response) => {    
+      //          console.log("Logged in"+JSON.stringify(response)) ;  
+      //           this.postData=response.data;                  
+      //       })    
+      //       .catch((errors) => {    
+      //           console.log("Server Side Error");
+      //       }) 
+            this.$loading(true)
+             axios.post("http://localhost:3000/getIndivudualFitnessPosts", this.profile)    
+           .then((response) => {    
+              // console.log("Logged in"+JSON.stringify(response)) ;
+               console.log("Data: "+JSON.stringify(response.data)) ; 
+              var finalData=response.data;
+              var itemData=[];
+              for(var i=0;i<finalData.length; i++){
+                for(var j=0;j<finalData[i].length;j++){
+                  itemData.push(finalData[i][j]);
+                }
+              }
+              this.postData=itemData;      
+              this.$loading(false)
+            })    
+            .catch((errors) => {  
+              this.$loading(false)  
+                console.log("Server Side Error");
+            })
+      },
+      uploadImage: function() {   debugger; 
+      var file = document
+        .querySelector('input[type=file]')
+        .files[0];
+        if(file.name!=""){
+          document.getElementsByClassName("file-name").innerHTML="file.name";
+         // $(".file-name").html(file.name);
+        }else{
+           document.getElementsByClassName("file-name").innerHTML="No file uploaded";
+        }
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        filePath=e.target.result;
+      };
+      reader.onerror = function(error) {
+        alert(error);
+      };
+      reader.readAsDataURL(file);      
+    },
+    uploadFitnessData: function(){
+      var time=new Date();
+      var file=filePath;
+      var title=this.$refs.Title.value;
+      var desc=this.$refs.Desc.value;
+      var id=JSON.parse(sessionStorage.getItem("userData"))._id;
+      var uploaderName=JSON.parse(sessionStorage.getItem("userData")).FirstName+" "+JSON.parse(sessionStorage.getItem("userData")).LastName;
+      var data={
+        title:title,
+        desc:desc,
+        file:file,
+        time:time,
+        id:id,
+        uploaderName:uploaderName
       }
+      console.log("Data: "+JSON.stringify(data));
+      this.$loading(true)
+        axios.post("http://localhost:3000/uploadFitness", data)    
+           .then((response) => {    
+              // console.log("Logged in"+JSON.stringify(response)) ;  
+             // this.postData=response.data;   
+             this.getAllPostData();    
+             this.$alert("Data Uploaded.");    
+             this.$loading(false);           
+            })    
+            .catch((errors) => {   
+              this.$loading(false) 
+                console.log("Server Side Error");  
+            }) 
     }
+     }
 }
 	document.addEventListener('DOMContentLoaded', () => {
 

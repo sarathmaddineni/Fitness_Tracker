@@ -9,5 +9,29 @@ var UserSchema=new mongoose.Schema({
     status:{type: String},
 });
 
+var uploads=new mongoose.Schema({
+    From:{type: String},
+    uploaderName:{type: String},
+    Title:{type: String},
+    Desc:{type: String},
+    File:{type: String},
+    Time:{type: String},
+    status:{type: String}
+});
+var FriendsSchema=new mongoose.Schema({
+    From:{type: String},
+    To:{type: String},
+    status:{type: String},
+    FromFirstName:{type: String},
+    FromLastName:{type: String},
+    FromEmail:{type: String},
+    FromPhone: {type: String},
+    ToFirstName:{type: String},
+    ToLastName:{type: String},
+    ToEmail:{type: String},
+    ToPhone: {type: String},
+});
 var User=mongoose.model("User", UserSchema);
-module.exports={User};
+var Uploads=mongoose.model("Uploads", uploads);
+var Friends=mongoose.model("Friends", FriendsSchema);
+module.exports={User, Uploads, Friends};

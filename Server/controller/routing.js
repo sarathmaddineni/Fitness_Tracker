@@ -199,6 +199,158 @@ Models.Friends.find({ $or: [ { To:req.body._id  }, { From:req.body._id  } ] }, (
     })
   });
 
+//add friend
+router.post('/addFriend', function (req, res) {
+    // console.log("Req: "+JSON.stringify(req.body));
+     var friends=new Models.Friends();
+     friends.From=req.body.userData._id;
+     friends.To=req.body.data._id;
+     friends.status=false;
+     friends.FromFirstName=req.body.userData.FirstName;
+     friends.FromLastName=req.body.userData.LastName;
+     friends.FromEmail=req.body.userData.Email;
+     friends.FromPhone= req.body.userData.Phone;
+     friends.ToFirstName=req.body.data.FirstName;
+     friends.ToLastName=req.body.data.FirstName;
+     friends.ToEmail=req.body.data.Email;
+     friends.ToPhone= req.body.data.Phone;
+ //console.log(friends);
+ friends.save((err, doc)=>{
+     if(!err){
+        // console.log("Saved..!");
+         res.send({
+             "statusCode":200,
+             "msg":"Succussfully sent request..!"
+         });
+     }else{
+         console.log("Error in saving data"+err);
+     }
+ })
+ 
+ });
+//get individual friend list 
+router.post('/getindivudualFriendsData', function (req, res) {
+    // console.log("Id:"+ req.body);
+     Models.Friends.find({ $or: [ { To:req.body.id  }, { From:req.body.id  } ] }, (err, doc)=>{
+         if(!err){
+            // console.log("Doc: "+doc);
+             var data=[];
+             for(var i=0;i<doc.length;i++){
+                 if(doc[i].status=="true"){
+                     data.push(doc[i]);
+                 }
+             }
+             res.send(data);
+         }else{
+             console.log("Err: "+err);
+         }
+     })
+ 
+ });
 
+ router.post('/allUserData', function (req, res) {
+    Models.User.find({_id: { $nin: req.body.id }}, (err, doc)=>{
+        if(!err){
+            res.send(doc);
+        }else{
+            console.log("Err: "+err);
+        }
+    })
+
+});
+//get all Active Users
+router.get('/getAllActiveUsers', function (req, res) {
+    Models.User.find({status: true}, (err, doc)=>{
+        if(!err){
+            res.send(doc);
+        }else{
+            console.log("Err: "+err);
+        }
+    })
+
+});
+//get inactive Users
+router.get('/getAllInActiveUsers', function (req, res) {
+    Models.User.find({status: "InActive"}, (err, doc)=>{
+        if(!err){
+            res.send(doc);
+        }else{
+            console.log("Err: "+err);
+        }
+    })
+
+});
+//inactive User
+router.post('/inActiveUser', function (req, res) {
+    console.log("InActive : "+JSON.stringify(req.body));
+    Models.User.updateOne({_id:req.body.data._id}, {$set: {status: "InActive"}}, (err, doc)=>{
+        if(!err){
+            res.send(doc);
+        }else{
+            console.log("Err: "+err);
+        }
+    })
+
+});
+//active User
+router.post('/activeUser', function (req, res) {
+    //console.log("InActive : "+JSON.stringify(req.body));
+    Models.User.updateOne({_id:req.body.data._id}, {$set: {status: true}}, (err, doc)=>{
+        if(!err){
+            res.send(doc);
+        }else{
+            console.log("Err: "+err);
+        }
+    })
+
+});
+
+router.get('/getAllRequestsData', function (req, res) {
+    Models.Friends.find((err, doc)=>{
+        if(!err){
+            res.send(doc);
+        }else{
+            console.log("Err: "+err);
+        }
+    })
+
+});
+router.post('/getindivudualRequestsData', function (req, res) {
+    //console.log("Id:"+ req.body);
+    Models.Friends.find({To:req.body.id, status: false}, (err, doc)=>{
+        if(!err){
+            res.send(doc);
+        }else{
+            console.log("Err: "+err);
+        }
+    })
+
+});
+router.post('/acceptRequest', function (req, res) {
+   // console.log("Id:"+ req.body);
+    Models.Friends.updateOne({_id:req.body.id}, {$set: {status: true}}, (err, doc)=>{
+        if(!err){
+            console.log("DOne");
+            res.redirect('/getindivudualRequestsData');
+           // res.send(doc);
+        }else{
+            console.log("Err: "+err);
+        }
+    })
+
+});
+router.post('/rejectRequest', function (req, res) {
+    //console.log("Id:"+ req.body);
+    Models.Friends.updateOne({_id:req.body.id}, {$set: {status: "reject"}}, (err, doc)=>{
+        if(!err){
+          //  console.log("DOne");
+            res.redirect('/getindivudualRequestsData');
+           // res.send(doc);
+        }else{
+            console.log("Err: "+err);
+        }
+    })
+
+});
 
 module.exports= router;

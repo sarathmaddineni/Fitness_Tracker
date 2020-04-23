@@ -14,13 +14,13 @@
       <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-start">
           <a class="navbar-item" href="#">
-              View Friend Requests
+              <router-link to="ViewRequest"> View Friend Requests</router-link>
             </a>
             <a class="navbar-item" href="#">
-              Find Friends
+              <router-link to="FindFriends">Find Friends</router-link>
             </a>
             <a class="navbar-item" href="#">
-              View Friends
+               <router-link to="ViewFriends">View Friends</router-link>
             </a>
         </div>
         </div>

@@ -3,7 +3,7 @@
     <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
         <div class="container">
             <div class="navbar-brand">
-                <img src=".././assets/images/mainlogo.jpg" width="85" alt="text" height="28">
+                <router-link to="dashbord"><img src=".././assets/images/mainlogo.jpg" width="85" alt="text" height="28"></router-link>
                 <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
                     data-target="navbarBasicExample">
                     <span aria-hidden="true"></span>
@@ -17,11 +17,9 @@
                     <a class="navbar-item" href="#">
                        <router-link to="ViewRequest"> View Friend Requests</router-link>
                     </a>
-                    <router-link to="FindFriends">
-                         <a class="navbar-item" href="#">
-                            Find Friends
-                         </a>
-                    </router-link>
+                    <a class="navbar-item" href="#">
+                         <router-link to="FindFriends">Find Friends</router-link>
+                    </a>
                     <a class="navbar-item" href="#">
                         <router-link to="ViewFriends">View Friends</router-link>
                     </a>
@@ -57,22 +55,17 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th>1</th>
-                    <td>Sample </td>
-                    <td>Sam</td>
-                    <td>sample@gmail.com</td>
-                    <td>+1(111)-111-1234</td>
-                    <td><a href="javascript:void(0)" v-on:click="AcceptRequest"><u>Accept</u></a>,&nbsp;&nbsp;<a href="javascript:void(0)" v-on:click="DeleteRequest(1)"><u>Delete</u></a></td>
+                <tr  v-for="(item, index) in items" :key="item.message">
+                    <th>{{index+1}}</th>
+                    <td>{{item.FromFirstName}} </td>
+                    <td>{{item.FromLastName}}</td>
+                    <td>{{item.FromEmail}}</td>
+                    <td>{{item.FromPhone}}</td>
+                    <td><a href="javascript:void(0)"  v-on:click="AcceptRequest(item)"><u>Accept</u></a>,&nbsp;&nbsp;<a href="javascript:void(0)" v-on:click="DeleteRequest(item)"><u>Delete</u></a></td>
                 </tr>
-                <tr>
-                    <th>2</th>
-                    <td>Sample </td>
-                    <td>Sam</td>
-                    <td>sample@gmail.com</td>
-                    <td>+1(111)-111-1234</td>
-                    <td><a href="javascript:void(0)" v-on:click="AcceptRequest"><u>Accept</u></a>,&nbsp;&nbsp;<a href="javascript:void(0)" v-on:click="DeleteRequest(2)"><u>Delete</u></a></td>
-                 </tr>
+                  <tr  v-if="items.length==0">
+                    <td colspan="6" class="has-text-centered">No Data</td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -80,20 +73,63 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
-  },
+  },data:()=>({
+       searchQuery: null,
+        column: null,
+        items: null
+    }), 
+    created(){debugger;
+      this.getRequestData();
+    },
   methods:{
-      DeleteRequest: function(index){
-         // this.rows.splice(index, 1);
-          this.$alert("Request Deleted.");
+      getRequestData: function(){
+         var id=JSON.parse(sessionStorage.getItem("userData"))._id;
+       axios.post("http://localhost:3000/getindivudualRequestsData", {id})    
+           .then((response) => {    
+               console.log("Logged in"+JSON.stringify(response)) ;  
+               this.items=response.data;
+                            
+            })    
+            .catch((errors) => {    
+                console.log("Error: "+errors);    
+            })
+      },
+      DeleteRequest: function(data){
+          var id=data._id;debugger;
+            axios.post("http://localhost:3000/rejectRequest", {id})    
+            .then((response) => {    
+                debugger;
+                 this.$alert("Request Deleted.");
+                console.log("Logged in"+JSON.stringify(response)) ;  
+                this.items=response.data;
+                                
+                })    
+                .catch((errors) => {    
+                    console.log("Error: "+errors);    
+                })
+         
          //this.rows.$remove(index);
            
       },
-       AcceptRequest: function(){
-          this.$alert("Request Accepted.");
+       AcceptRequest: function(data){
+            var id=data._id;debugger;
+            axios.post("http://localhost:3000/acceptRequest", {id})    
+            .then((response) => {    
+                debugger;
+                console.log("Logged in"+JSON.stringify(response)) ;  
+                this.$alert("Request Accepted.");
+                this.items=response.data;
+                this.getRequestData();     
+                })    
+                .catch((errors) => {    
+                    console.log("Error: "+errors);    
+                })
+            
            
       }
   }

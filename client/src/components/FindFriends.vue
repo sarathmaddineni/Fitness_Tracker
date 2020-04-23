@@ -3,7 +3,7 @@
     <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
         <div class="container">
             <div class="navbar-brand">
-                <img src=".././assets/images/mainlogo.jpg" width="85" alt="text" height="28">
+                <router-link to="dashbord"> <img src=".././assets/images/mainlogo.jpg" width="85" alt="text" height="28"></router-link>
                 <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
                     data-target="navbarBasicExample">
                     <span aria-hidden="true"></span>
@@ -18,7 +18,7 @@
                        <router-link to="ViewRequest"> View Friend Requests</router-link>
                     </a>
                     <a class="navbar-item" href="#">
-                        Find Friends
+                       <router-link to="FindFriends"> Find Friends</router-link>
                     </a>
                     <a class="navbar-item" href="#">
                         <router-link to="ViewFriends">View Friends</router-link>
@@ -49,7 +49,7 @@
              <div class="column is-6">
                  <div class="field">
                     <div class="control">
-                        <input class="input is-info" type="text" v-model="searchQuery" placeholder="Search...">
+                        <!-- <input class="input is-info" type="text" v-model="searchQuery" placeholder="Search..."> -->
                     </div>
                  </div>
             </div>
@@ -66,13 +66,16 @@
                 </tr>
             </thead>
             <tbody>
-                <tr  v-for="item in items" :key="item.message">
-                    <th>{{item.SNo}}</th>
-                    <td>{{item.firstName}} </td>
-                    <td>{{item.lastName}}</td>
+                <tr  v-for="(item, index) in items" :key="item.message">
+                    <th>{{index+1}}</th>
+                    <td>{{item.FirstName}} </td>
+                    <td>{{item.LastName}}</td>
                     <td>{{item.Email}}</td>
                     <td>{{item.Phone}}</td>
-                    <td><a href="javascript:void(0)"><u>{{item.Status}}</u></a></td>
+                    <td><a href="javascript:void(0)"  v-on:click="addFriend(item)"><u>Add Friend</u></a></td>
+                </tr>
+                <tr  v-if="items.length==0">
+                    <td colspan="6" class="has-text-centered">No Data</td>
                 </tr>
             </tbody>
         </table>
@@ -81,6 +84,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: 'HelloWorld',
   props: {
@@ -89,60 +93,37 @@ export default {
   data:()=>({
        searchQuery: null,
         column: null,
-        items:  [
-      {
-        "SNo":1,
-        "firstName":"Sample",
-        "lastName":"S",
-        "Email":"sample@gmail.com",
-        "Phone":"+1(111) 123-1234",
-        "Status":"Add Friend"
-      },
-       {
-       "SNo":2,
-       "firstName":"Sample",
-        "lastName":"S",
-        "Email":"sample@gmail.com",
-        "Phone":"+1(111) 123-1234",
-        "Status":"Status Pending"
-      },
-       {
-        "SNo":3,
-       "firstName":"Sample",
-        "lastName":"S",
-        "Email":"sample@gmail.com",
-        "Phone":"+1(111) 123-1234",
-        "Status":"Friends"
-      }
-    ]
+        items:  null
     }),
   methods:{
+      addFriend: function(data){
+        debugger;
+        var userData=JSON.parse(sessionStorage.getItem("userData"));
+        axios.post("http://localhost:3000/addFriend", {data, userData})    
+           .then((response) => {    
+               console.log("Logged in"+JSON.stringify(response)) ; 
+                this.$alert("Request Sent."); 
+              // this.items=response;
+            })    
+            .catch((errors) => {    
+                console.log("Error: "+errors);    
+            })
+      },
       sendRequest: function(index){
           this.$alert("Request Sent.");           
       }
   },
-computed: {
-    filteredData: function () {
-      var sortKey = this.sortKey
-      var filterKey = this.filterKey && this.filterKey.toLowerCase()
-      var order = this.sortOrders[sortKey] || 1
-      var data = this.data
-      // FILTER ONLY BY NAME
-      if (filterKey) {
-        data = data.filter( function (row) {
-          return row.name.toLowerCase().includes(filterKey)
-        })
-      }
-      // ==============
-      if (sortKey) {
-        data = data.slice().sort(function (a, b) {
-          a = a[sortKey]
-          b = b[sortKey]
-          return (a === b ? 0 : a > b ? 1 : -1) * order
-        })
-      }
-      return data
-    }
+created(){
+    var id=JSON.parse(sessionStorage.getItem("userData"))._id;
+       axios.post("http://localhost:3000/allUserData", {id})    
+           .then((response) => {    
+               console.log("Logged in"+JSON.stringify(response)) ;  
+               this.items=response.data;
+                            
+            })    
+            .catch((errors) => {    
+                console.log("Error: "+errors);    
+            })
   },
   filters: {
     capitalize: function (str) {

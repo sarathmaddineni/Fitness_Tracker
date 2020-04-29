@@ -353,4 +353,40 @@ router.post('/rejectRequest', function (req, res) {
 
 });
 
+//inactivate post
+router.post("/InActivePost", function(req, res){
+    //console.log("Data: "+ JSON.stringify(req.body));
+  Models.Uploads.updateOne({_id:req.body.data._id}, {$set: {status: "InActive"}}, (err, doc)=>{
+      if(!err){
+          console.log("Inactive Done");
+          res.send(doc);
+      }else{
+          console.log("Error in saving data"+err);
+      }
+  })
+});
+//activate Post
+router.post("/activatePost", function(req, res){
+  //console.log("Data: "+ JSON.stringify(req.body));
+Models.Uploads.updateOne({_id:req.body.data._id}, {$set: {status: true}}, (err, doc)=>{
+    if(!err){
+        console.log("activate Done");
+        res.send(doc);
+    }else{
+        console.log("Error in saving data"+err);
+    }
+})
+});
+//delete post
+router.post("/deletePost", function(req, res){
+  //console.log("Data: "+ JSON.stringify(req.body));
+Models.Uploads.remove({_id:req.body.data._id}, (err, doc)=>{
+    if(!err){
+        console.log("Delete Done");
+        res.send(doc);
+    }else{
+        console.log("Error in saving data"+err);
+    }
+})
+})
 module.exports= router;

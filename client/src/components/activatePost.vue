@@ -13,14 +13,14 @@
     
       <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-start">
-          <a class="navbar-item" href="#">
+            <a class="navbar-item has-text-white" href="#">
               <router-link to="ActivatePost">Activate Posts</router-link>
             </a> 
             <a class="navbar-item" href="#">
-             <router-link to="ManageUsers"> Manage Accounts</router-link>
+              <router-link to="ManageUsers"> Manage Accounts</router-link>
             </a>
             <a class="navbar-item" href="#">
-              <router-link to="ActivateUsers"> Activate Users</router-link>
+                <router-link to="ActivateUsers"> Activate Users</router-link>
             </a>
         </div>
         </div>
@@ -39,8 +39,8 @@
           </div>
         </div>
       </div>
-    </nav>  
-     <div class="container">
+    </nav> 
+    <div class="container">
      <div class="columns">
       <div class="column is-8">
         <div class="card">
@@ -69,8 +69,8 @@
               </div>
               <div class="dropdown-menu" id="dropdown-menu4" role="menu">
                 <div class="dropdown-content">
-                   <div class="dropdown-item dropclass"  v-on:click="InActive(item)" style="border-bottom:1px solid #ccc">
-                    InActive
+                   <div class="dropdown-item dropclass"  v-on:click="ActivatePost(item)" style="border-bottom:1px solid #ccc">
+                    Activate
                   </div>
                    <div class="dropdown-item dropclass"  v-on:click="Remove(item)">
                     Remove
@@ -151,61 +151,50 @@ export default {
       }
     },
     created(){    
-          this.getAllPosts();  
+          this.getAllInActivePosts();  
     },
     methods:{
-      getAllPosts: function() {  
-        this.$loading(true)
-          axios.get("http://localhost:3000/getAllFitnessPosts")    
+      getAllInActivePosts: function() {  
+           this.$loading(true)
+          axios.get("http://localhost:3000/getAllInactiveFitnessPosts")    
            .then((response) => {    
-             this.$loading(false)
                console.log("Logged in"+JSON.stringify(response)) ;  
-                this.postData=response.data;                  
+                this.postData=response.data;   
+                 this.$loading(false)               
             })    
-            .catch((errors) => {  
-              this.$loading(false)  
+            .catch((errors) => { 
+                this.$loading(false)    
                 console.log("Server Side Error");
             })
       },
-      Edit: function(data){
+      ActivatePost: function(data){
          // alert("Id: "+data._id);
-        // $(".modal").modal();
-          //  axios.post("http://localhost:3000/getAllFitnessPosts")    
-          //  .then((response) => {    
-          //      console.log("Logged in"+JSON.stringify(response)) ;  
-          //       this.postData=response.data;                  
-          //   })    
-          //   .catch((errors) => {    
-          //       console.log("Server Side Error");
-          //   })
-      },
-      InActive: function(data){
-         // alert("Id: "+data._id);
-         this.$loading(true)
-           axios.post("http://localhost:3000/InActivePost", {data})    
+         this.$loading(true) 
+           axios.post("http://localhost:3000/activatePost", {data})    
            .then((response) => {    
+               this.$loading(false) 
                console.log("Logged in"+JSON.stringify(response)) ;  
                 //this.postData=response.data; 
-                this.$loading(false)
-                 this.$alert("Post inactived successfully.");
-                this.getAllPosts();                 
+                 this.$alert("Post actived successfulyy.");
+                this.getAllInActivePosts();                 
             })    
             .catch((errors) => {    
+                this.$loading(false) 
                 console.log("Server Side Error");
             });
       },
       Remove: function(data){
-        this.$loading(true)
+          this.$loading(true) 
          // alert("Id: "+data._id);
            axios.post("http://localhost:3000/deletePost", {data})    
-           .then((response) => {    
-             this.$loading(false)
+           .then((response) => {  
+               this.$loading(false)   
                console.log("Logged in"+JSON.stringify(response)) ;  
                this.$alert("Post has been deleted.");
-                this.getAllPosts();                    
+                this.getAllInActivePosts();                    
             })    
-            .catch((errors) => {    
-              this.$loading(false)
+            .catch((errors) => {   
+                this.$loading(false)  
                 console.log("Server Side Error");
             })
       }
@@ -215,5 +204,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-
+.dropclass:hover{
+  cursor: pointer;
+}
 </style>

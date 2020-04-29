@@ -3,7 +3,7 @@
     <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
         <div class="container">
             <div class="navbar-brand">
-                 <router-link to="AdminDashboard"><img src=".././assets/images/mainlogo.jpg" width="85" alt="text" height="28"></router-link>
+               <router-link to="AdminDashboard"> <img src=".././assets/images/mainlogo.jpg" width="85" alt="text" height="28"></router-link>
                 <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
                     data-target="navbarBasicExample">
                     <span aria-hidden="true"></span>
@@ -14,7 +14,7 @@
 
             <div id="navbarBasicExample" class="navbar-menu">
                 <div class="navbar-start">
-                     <a class="navbar-item" href="#">
+                    <a class="navbar-item" href="#">
                          <router-link to="ActivatePost">Activate Posts</router-link>
                     </a> 
                     <a class="navbar-item" href="#">
@@ -48,24 +48,24 @@
                 <tr>
                     <th>S.No</th>
                     <th>First Name</th>
-                    <th><abbr title="Played">Last Name</abbr></th>
-                    <th><abbr title="Won">Email</abbr></th>
-                    <th><abbr title="Drawn">Phone Num</abbr></th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone Num</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-               <tr  v-for="(item, index) in items" :key="item.message">
+                <tr  v-for="(item, index) in items" :key="item.message">
                     <th>{{index+1}}</th>
                     <td>{{item.FirstName}} </td>
                     <td>{{item.LastName}}</td>
                     <td>{{item.Email}}</td>
                     <td>{{item.Phone}}</td>
                     <td>
-                         <a href="javascript:void(0)" type="button" v-on:click="inActiveUser(item)" class = "button is-primary is-outlined">
-                            <span>InActive</span>
+                         <a href="javascript:void(0)" type="button" v-on:click="activeUser(item)" class = "button is-primary is-outlined">
+                            <span>Activate</span>
                             <span class = "icon is-small">
-                                <i class = "fas fa-times"></i>
+                                <i class = "fas fa-check"></i>
                             </span>
                         </a>&nbsp;
                         <a href="javascript:void(0)" type="button" v-on:click="deleteUser(item)" class = "button is-danger is-outlined">
@@ -103,23 +103,24 @@ export default {
     methods:{
         getAllUser:function(){
             this.$loading(true)
-            axios.get("http://localhost:3000/getAllActiveUsers")    
+            axios.get("http://localhost:3000/getAllInActiveUsers")    
             .then((response) => {  
-                console.log(response);
+                 this.$loading(false)
+                //console.log(response);
                 this.items=response.data;
-                this.$loading(false)
+              
                 })    
                 .catch((errors) => {  
                     this.$loading(false) 
                     console.log("Error: "+errors);    
                 })
         },
-        inActiveUser: function(data){
-             this.$loading(true)
-            axios.post("http://localhost:3000/inActiveUser", {data})    
+        activeUser: function(data){
+            this.$loading(true)
+            axios.post("http://localhost:3000/activeUser", {data})    
             .then((response) => {  
                 //console.log(response);
-                 this.$alert("User inactived successfully.");
+                 this.$alert("User actived successfully.");
                  this.$loading(false)
                  this.getAllUser();
                 })    
@@ -148,6 +149,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-
 </style>
-    

@@ -13,6 +13,8 @@ import VueSimpleAlert from "vue-simple-alert";
 import ViewFriends from "./components/ViewFriends.vue";
 import ViewRequest from "./components/ViewRequest.vue";
 import FindFriends from "./components/FindFriends.vue";
+import ActivatePost from "./components/activatePost.vue";
+import ActivateUsers from "./components/activateUsers.vue";
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all.js'
 import VueLoading from 'vuejs-loading-plugin';
@@ -39,7 +41,9 @@ const routes = [
 {path: "/ManageUsers", component: manageUsers},
 {path: "/ViewFriends", component: ViewFriends},
 {path: "/ViewRequest", component: ViewRequest},
-{path: "/FindFriends", component: FindFriends}
+{path: "/FindFriends", component: FindFriends},
+{path: "/ActivatePost", component: ActivatePost},
+{path: "/ActivateUsers", component: ActivateUsers},
 ]
 
 const router= new VueRouter({

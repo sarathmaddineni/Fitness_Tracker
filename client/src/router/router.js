@@ -8,6 +8,8 @@ import manageUsers from "../components/manageUsers.vue";
 import ViewFriends from "../components/ViewFriends.vue";
 import ViewRequest from "../components/ViewRequest.vue";
 import FindFriends from "../components/FindFriends.vue";
+import ActivatePost from "../components/activatePost.vue";
+import ActivateUsers from "../components/activateUsers.vue";
 
 Vue.use(VueRouter);
 
@@ -21,7 +23,9 @@ const routes = [
 {path: "/ManageUsers", component: manageUsers},
 {path: "/ViewFriends", component: ViewFriends},
 {path: "/ViewRequest", component: ViewRequest},
-{path: "/FindFriends", component: FindFriends}
+{path: "/FindFriends", component: FindFriends},
+{path: "/ActivatePost", component: ActivatePost},
+{path: "/ActivateUsers", component: ActivateUsers},
 ]
 
 const router= new VueRouter({

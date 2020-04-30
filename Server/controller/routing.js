@@ -10,6 +10,8 @@ router.post('/Register', function (req, res) {
       var user=new Models.User();
       user.FirstName=req.body.FirstName;
       user.LastName=req.body.LastName;
+      user.Height=req.body.Height;
+      user.Weight=req.body.Weight;
       user.Email=req.body.Email;
       user.Phone=req.body.PhoneNumber;
       user.PassWord=req.body.Password;
@@ -23,7 +25,11 @@ router.post('/Register', function (req, res) {
               "msg":"Succussfully saved user..!"
           });
       }else{
-          console.log("Error in saving data"+err);
+         // console.log("Error in saving data"+err);
+          res.send({
+            "statusCode":500,
+            "msg":err
+        });
       }
   })
   

@@ -26,6 +26,22 @@ Create Account</h1>
  <div class="field-body">
  <div class="field">
  <div class="control">
+ <label class="label">Height</label>
+ <input class="input is-info" id="txtfname" name="txtfname" ref="height" type="text" value="" />
+ </div>
+</div>
+<div class="field">
+ <div class="control">
+ <label class="label">Weight</label>
+ <input class="input is-info" id="txtfname" name="txtfname" ref="weight" type="text" value="" />
+ </div>
+</div>
+</div>
+</div>
+<div class="field is-horizontal">
+ <div class="field-body">
+ <div class="field">
+ <div class="control">
  <label class="label">Email</label>
  <input class="input is-info" id="txtfname" name="txtfname" ref="Email" type="text" value="" />
  </div>
@@ -43,13 +59,13 @@ Create Account</h1>
  <div class="field">
  <div class="control">
  <label class="label">Password</label>
- <input class="input is-info" id="txtfname" name="txtfname"  ref="Password" type="text" value="" />
+ <input class="input is-info" id="txtfname" name="txtfname"  ref="Password" type="password" value="" />
  </div>
 </div>
 <div class="field">
  <div class="control">
  <label class="label">Confirm Password</label>
- <input class="input is-info" id="txtfname" name="txtfname" ref="ConfirmPassword" type="text" value="" />
+ <input class="input is-info" id="txtfname" name="txtfname" ref="ConfirmPassword" type="password" value="" />
  </div>
 </div>
 </div>
@@ -94,6 +110,8 @@ export default {
     Register(){
       var FirstName=this.$refs.FirstName.value;
       var LastName=this.$refs.LastName.value;
+      var Height=this.$refs.height.value;
+      var Weight=this.$refs.weight.value;
       var Email=this.$refs.Email.value;
       var PhoneNumber=this.$refs.PhoneNumber.value;
       var Password=this.$refs.Password.value;
@@ -104,6 +122,14 @@ export default {
       }
       if(LastName==""){
         this.$alert("Please enter Last Name.");
+        return false;
+      }
+       if(Height==""){
+        this.$alert("Please enter height of the person.");
+        return false;
+      }
+      if(Weight==""){
+        this.$alert("Please enter weight of the person.");
         return false;
       }
        if(Email==""){
@@ -129,6 +155,8 @@ export default {
       let data = {    
               FirstName:FirstName,
               LastName:LastName,
+              Height:Height,
+              Weight:Weight,
               Email:Email,
               PhoneNumber:PhoneNumber,
               Password:Password  
@@ -141,7 +169,12 @@ export default {
                if(res.data.statusCode==200){
                    this.$alert("User saved successfully...!");
                    this.$router.push({path: '/login'});
-               }else{
+               }
+                if(res.data.statusCode==500){
+                   this.$alert(JSON.stringify(res.data.msg.errmsg));
+                  // this.$router.push({path: '/login'});
+               }
+               else{
                    this.$alert("Error in saving user.");
                }                   
             })    

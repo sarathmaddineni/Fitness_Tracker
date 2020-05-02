@@ -4,8 +4,7 @@
  <div class="container has-text-centered">
  <div class="box">
  <form action="" method="post">
- <h1 class="title">
-Create Account</h1>
+ <h1 class="title">Create Account</h1>
 <div class="field is-horizontal">
  <div class="field-body">
  <div class="field">
@@ -82,6 +81,9 @@ Create Account</h1>
  <input class="button is-info is-fullwidth" id="txtfname" name="txtfname"  v-on:click="Register" type="button" value="Sign Up" />
  </div>
 </div>
+ <div class="text-right">
+                <p class="text-grey-dark text-sm">Already have an account? <a href="#" class="text-blue font-bold"><router-link to="login">LogIn here</router-link></a>.</p>
+            </div>
 <div class="field">
  <div class="control">
 

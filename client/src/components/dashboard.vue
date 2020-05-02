@@ -108,6 +108,9 @@
           </div>
           <hr v-if="item.length!=2">
           </span>
+          <div style="text-align:center">
+             <img v-if="postData.length==0" src=".././assets/images/nodata.png">
+          </div>         
         </div>
       </div>
     </div>
@@ -133,7 +136,7 @@
             <div class="column is-4">
               <b>Email</b>
             </div>
-            <div class="column is-8">
+            <div class="column is-8 breaktext">
               {{profile.Email}}
             </div>
           </div>
@@ -143,6 +146,22 @@
             </div>
             <div class="column is-8">
              {{profile.Phone}}
+            </div>
+          </div>
+            <div class="columns">
+            <div class="column is-4">
+              <b>Height</b>
+            </div>
+            <div class="column is-8">
+             {{profile.Height}}
+            </div>
+          </div>
+            <div class="columns">
+            <div class="column is-4">
+              <b>Weight</b>
+            </div>
+            <div class="column is-8">
+             {{profile.Weight}}
             </div>
           </div>
         </div>
@@ -166,8 +185,12 @@
 .navbar.is-primary {
     background-color: #4f9cb7;
 }
+.breaktext{
+  word-break: break-all;
+}
 </style>
 <script>
+
 function encodeImageFileAsURL(element) {debugger;
   var file = element.files[0];
   var reader = new FileReader();

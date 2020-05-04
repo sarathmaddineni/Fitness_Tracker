@@ -187,7 +187,8 @@
     width: 42px;
 }
 .navbar.is-primary {
-    background-color: #4f9cb7;
+    background-color: #00d1b2;
+    color: #fff;
 }
 .breaktext{
   word-break: break-all;

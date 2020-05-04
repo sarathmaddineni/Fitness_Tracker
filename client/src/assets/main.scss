@@ -1,1 +1,11 @@
-@import "~bulma/bulma"
+@import "~bulma/bulma";
+
+.background{
+    background-color: #e0e0e0 !important;
+}
+.activetext{
+    color: #fff;
+}
+.activebackground{
+    background: #96afaf;
+}

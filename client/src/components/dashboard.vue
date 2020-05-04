@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <section class="background">
       <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
         <div class="container">
       <div class="navbar-brand">
@@ -106,7 +106,7 @@
               <time datetime="2016-1-1">{{item.Time}}</time>
             </div>
           </div>
-          <hr v-if="item.length!=2">
+          <hr style="background-color: #85c3be;">
           </span>
           <div style="text-align:center">
              <img v-if="postData.length==0" src=".././assets/images/nodata.png">
@@ -119,7 +119,8 @@
         <div class="card">
       <div class="card-image">
         <figure class="image is-4by3">
-          <img src=".././assets/images/profile.jpg" alt="Placeholder image">
+          <img v-if="!profile.filePath" src=".././assets/images/profile.jpg" alt="Placeholder image">
+           <img v-if="profile.filePath"  v-bind:src="profile.filePath" alt="Placeholder image">
         </figure>
       </div>
       <div class="card-content">
@@ -174,6 +175,9 @@
 <style scoped>
 .card{
   margin: 20px;
+}
+.background{
+      background-color: #e0e0e0 !important;
 }
 .navbar.is-fixed-bottom, .navbar.is-fixed-top {
     position: static !important;

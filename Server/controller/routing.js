@@ -15,6 +15,7 @@ router.post('/Register', function (req, res) {
       user.Email=req.body.Email;
       user.Phone=req.body.PhoneNumber;
       user.PassWord=req.body.Password;
+      user.filePath=req.body.filePath;
       user.status=true
   console.log(user);
   user.save((err, doc)=>{
@@ -42,9 +43,10 @@ router.post('/Login', function (req, res) {
     Models.User.findOne({"Email":req.body.email}, (err, doc)=>{
         if(!err){
            var response=doc;
+           console.log(response.PassWord);
            if(doc){
                if(response.Email==req.body.email && response.PassWord==req.body.password){
-                   console.log(response);
+                  
                     if(response.status=='true'){
                         res.send({
                             "statusCode":200,

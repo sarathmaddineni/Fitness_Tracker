@@ -9,6 +9,7 @@ var UserSchema=new mongoose.Schema({
     Phone: {type: String},
     PassWord:{type: String},
     status:{type: String},
+    filePath:{type: String}    
 });
 
 var uploads=new mongoose.Schema({

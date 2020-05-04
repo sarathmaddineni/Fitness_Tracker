@@ -73,6 +73,16 @@
  <div class="field-body">
  <div class="field">
  <div class="control">
+ <label class="label">Profile Photo</label>
+ <input  @change="uploadImage" type="file" name="photo" accept="image/*">
+ </div>
+</div>
+</div>
+</div>
+<div class="field is-horizontal">
+ <div class="field-body">
+ <div class="field">
+ <div class="control">
 
  </div>
 </div>
@@ -106,9 +116,29 @@
 }
 </style>
 <script>
+var filePath;
 import axios from "axios";
 export default {
   methods:{
+     uploadImage: function() {   debugger; 
+      var file = document
+        .querySelector('input[type=file]')
+        .files[0];
+        if(file.name!=""){
+          document.getElementsByClassName("file-name").innerHTML="file.name";
+         // $(".file-name").html(file.name);
+        }else{
+           document.getElementsByClassName("file-name").innerHTML="No file uploaded";
+        }
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        filePath=e.target.result;
+      };
+      reader.onerror = function(error) {
+        alert(error);
+      };
+      reader.readAsDataURL(file);      
+    },
     Register(){
       var FirstName=this.$refs.FirstName.value;
       var LastName=this.$refs.LastName.value;
@@ -161,7 +191,8 @@ export default {
               Weight:Weight,
               Email:Email,
               PhoneNumber:PhoneNumber,
-              Password:Password  
+              Password:Password,
+              filePath:filePath
            }    
       axios.post("http://localhost:3000/Register", data)    
            .then((response) => {    
@@ -171,13 +202,16 @@ export default {
                if(res.data.statusCode==200){
                    this.$alert("User saved successfully...!");
                    this.$router.push({path: '/login'});
+                   return false;
                }
                 if(res.data.statusCode==500){
                    this.$alert(JSON.stringify(res.data.msg.errmsg));
+                   return false;
                   // this.$router.push({path: '/login'});
                }
                else{
                    this.$alert("Error in saving user.");
+                   return false;
                }                   
             })    
             .catch((errors) => {    

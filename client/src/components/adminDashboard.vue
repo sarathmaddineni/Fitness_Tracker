@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="background">
        <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
         <div class="container">
       <div class="navbar-brand">
@@ -88,7 +88,7 @@
               <time datetime="2016-1-1">{{item.Time}}</time>
             </div>
           </div>
-          <hr>
+          <hr style="background-color: #85c3be;">
           </span>
         </div>
       </div>

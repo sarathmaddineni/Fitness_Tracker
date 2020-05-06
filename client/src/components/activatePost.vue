@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="background">
        <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
         <div class="container">
       <div class="navbar-brand">
@@ -13,8 +13,8 @@
     
       <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-start">
-            <a class="navbar-item has-text-white" href="#">
-              <router-link to="ActivatePost">Activate Posts</router-link>
+            <a class="navbar-item activebackground" href="#">
+              <router-link to="ActivatePost" class="activetext">Activate Posts</router-link>
             </a> 
             <a class="navbar-item" href="#">
               <router-link to="ManageUsers"> Manage Accounts</router-link>

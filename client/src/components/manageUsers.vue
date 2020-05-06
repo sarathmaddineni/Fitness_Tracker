@@ -1,5 +1,5 @@
 <template>
-<section>
+<section class="background">
     <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
         <div class="container">
             <div class="navbar-brand">
@@ -17,8 +17,8 @@
                      <a class="navbar-item" href="#">
                          <router-link to="ActivatePost">Activate Posts</router-link>
                     </a> 
-                    <a class="navbar-item" href="#">
-                         <router-link to="ManageUsers"> Manage Accounts</router-link>
+                    <a class="navbar-item activebackground" href="#">
+                         <router-link to="ManageUsers" class="activetext"> Manage Accounts</router-link>
                     </a>
                     <a class="navbar-item" href="#">
                          <router-link to="ActivateUsers"> Activate Users</router-link>
@@ -43,7 +43,49 @@
     </nav>
     <div class="section container text-center">
         <h2><b><u>Manage Users</u></b></h2>
-        <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+          <div v-for="(item, index) in items" :key="item.message" >       
+            <div class="card">
+                <div class="card-content">
+                    <div class="media">
+                    <div class="media-content">
+                         <div class="columns">
+                            <div class="column is-4">
+                                <b>S.No :</b> {{index+1}}<br><br>
+                                <b>Email: </b>{{item.Email}}<br><br>
+                                 <b>Weight: </b>{{item.Weight}}<br><br>
+
+                            </div>
+                             <div class="column is-4">
+                                <b>First Name: </b>{{item.FirstName}}<br><br>
+                                <b>Phone No:</b>{{item.Phone}}<br><br>
+                                <a href="javascript:void(0)" type="button" v-on:click="inActiveUser(item)" class = "button is-primary is-outlined">
+                            <span>InActive</span>
+                            <span class = "icon is-small">
+                                <i class = "fas fa-times"></i>
+                            </span>
+                        </a>&nbsp;
+                        <a href="javascript:void(0)" type="button" v-on:click="deleteUser(item)" class = "button is-danger is-outlined">
+                            <span>Delete</span>
+                            <span class = "icon is-small">
+                                <i class = "fas fa-trash"></i>
+                            </span>
+                        </a>
+                            </div>
+                             <div class="column is-4">
+                             <b>Last Name: </b>{{item.LastName}}<br><br>
+                             <b>Height: </b>{{item.Height}}<br><br>                             
+                            </div>
+                         </div>
+                       
+                    </div>
+                    </div>
+                </div>
+            </div>
+            
+            <br>
+         </div>
+         <p v-if="items.length==0" class="has-text-centered">No Data</p>
+        <!-- <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
             <thead>
                 <tr>
                     <th>S.No</th>
@@ -80,7 +122,7 @@
                     <td colspan="6" class="has-text-centered">No Data</td>
                 </tr>
             </tbody>
-        </table>
+        </table> -->
     </div>
 </section>
 </template>

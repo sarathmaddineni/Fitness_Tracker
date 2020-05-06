@@ -19,7 +19,9 @@ var uploads=new mongoose.Schema({
     Desc:{type: String},
     File:{type: String},
     Time:{type: String},
-    status:{type: String}
+    status:{type: String},
+    exTime:{type: String},
+    calloss:{type: String}
 });
 var FriendsSchema=new mongoose.Schema({
     From:{type: String},

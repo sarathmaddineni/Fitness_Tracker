@@ -57,6 +57,16 @@
           <div class="media-content is-6">
             <p class="title is-4"> {{item.Title}}</p>
             <p class="subtitle is-6">{{item.Desc}}</p>
+              <div class="columns">
+            <div class="column is-12">
+              <b>Weight Loss :</b> {{item.calloss}}
+            </div>          
+          </div>
+          <div class="columns">
+              <div class="column is-12">
+             <b>Exercise Time:</b> {{item.exTime}}
+            </div>
+          </div>
           </div>
           <div class="is-2">
             <div class="dropdown is-hoverable">
@@ -85,7 +95,7 @@
               {{item.uploaderName}}
             </div>
             <div class="column is-6 has-text-right">
-              <time datetime="2016-1-1">{{item.Time}}</time>
+              <time datetime="2016-1-1">{{item.Time  |  moment("MMMM Do YYYY, h:mm:ss a")}}</time>
             </div>
           </div>
           <hr>

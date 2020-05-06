@@ -51,13 +51,25 @@
             <div class="field">
       <label class="label">Title of Exercise</label>
       <div class="control">
-        <input class="input is-info"  ref="Title" type="text" placeholder="Text input">
+        <input class="input is-info"  ref="Title" type="text" placeholder="Title of Exercise">
       </div>
     </div>
     <div class="field">
       <label class="label">Description</label>
       <div class="control">
-        <textarea class="textarea is-info"  ref="Desc"  placeholder="Textarea"></textarea>
+        <textarea class="textarea is-info"  ref="Desc"  placeholder="Description"></textarea>
+      </div>
+    </div>
+     <div class="field">
+      <label class="label">Weight Loss(calories)</label>
+      <div class="control">
+        <input class="input is-info"  ref="calloss" type="text" placeholder="Weight Loss">
+      </div>
+    </div>
+    <div class="field">
+      <label class="label">Exercise Time</label>
+      <div class="control">
+        <input class="input is-info"  ref="exTime" type="text" placeholder="Weight Loss">
       </div>
     </div>
     <div class="field">
@@ -95,15 +107,24 @@
           <div class="media-content">
             <p class="title is-4"> {{item.Title}}</p>
             <p class="subtitle is-6">{{item.Desc}}</p>
+             <div class="columns">
+            <div class="column is-12">
+              <b>Weight Loss :</b> {{item.calloss}}
+            </div>          
           </div>
-         
+          <div class="columns">
+              <div class="column is-12">
+             <b>Exercise Time:</b> {{item.exTime}}
+            </div>
+          </div>
+          </div>
         </div>
           <div class="columns">
             <div class="column is-6">
               {{item.uploaderName}}
             </div>
             <div class="column is-6">
-              <time datetime="2016-1-1">{{item.Time}}</time>
+              <time datetime="2016-1-1">{{item.Time |  moment("MMMM Do YYYY, h:mm:ss a")}}</time>
             </div>
           </div>
           <hr style="background-color: #85c3be;">
@@ -219,6 +240,12 @@ export default {
      this.getAllPostData();            
     },
      methods:{
+       format_date(value){
+         if (value) {
+           console.log("Executed");
+           return moment(String(value)).format('YYYYMMDD')
+          }
+      },
       getAllPostData: function(){
          this.profile=JSON.parse(sessionStorage.getItem("userData"));
       //  axios.get("http://localhost:3000/getAllFitnessPosts")    
@@ -241,7 +268,8 @@ export default {
                   itemData.push(finalData[i][j]);
                 }
               }
-              this.postData=itemData;      
+              this.postData=itemData; 
+              console.log("Data: "+JSON.stringify( this.postData));     
               this.$loading(false)
             })    
             .catch((errors) => {  
@@ -273,11 +301,15 @@ export default {
       var file=filePath;
       var title=this.$refs.Title.value;
       var desc=this.$refs.Desc.value;
+      var calloss=this.$refs.calloss.value;
+      var exTime=this.$refs.exTime.value;
       var id=JSON.parse(sessionStorage.getItem("userData"))._id;
       var uploaderName=JSON.parse(sessionStorage.getItem("userData")).FirstName+" "+JSON.parse(sessionStorage.getItem("userData")).LastName;
       var data={
         title:title,
         desc:desc,
+        exTime:exTime,
+        calloss:calloss,
         file:file,
         time:time,
         id:id,

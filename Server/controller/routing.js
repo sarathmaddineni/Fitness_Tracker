@@ -112,8 +112,10 @@ router.post('/uploadFitness', function (req, res) {
     upload.Desc=req.body.desc;;
     upload.File=req.body.file;
     upload.Time=req.body.time;
+    upload.calloss=req.body.calloss;
+    upload.exTime=req.body.exTime;
     upload.status=true;
-   // console.log("Data: "+upload);
+    console.log("Data: "+upload);
     upload.save((err, doc)=>{
         if(!err){
            // console.log("Saved..!");
@@ -198,7 +200,7 @@ Models.Friends.find({ $or: [ { To:req.body._id  }, { From:req.body._id  } ] }, (
             });
            }
            setTimeout(function(){ 
-            console.log("FinalData: "+postData);
+          //  console.log("FinalData: "+postData);
                res.send(postData);
              }, 500);           
         }else{

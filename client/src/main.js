@@ -20,6 +20,7 @@ import '@fortawesome/fontawesome-free/js/all.js'
 import VueLoading from 'vuejs-loading-plugin';
 
 Vue.use(VueSimpleAlert);
+Vue.use(require('vue-moment'));
 Vue.use(VueLoading, {
   dark: true, // default false
   text: 'Loadind...', // default 'Loading'

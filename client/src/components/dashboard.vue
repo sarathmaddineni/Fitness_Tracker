@@ -48,10 +48,13 @@
         <div class="media">
           <div class="media-content">
             <h2 class="title is-3">Upload your Exercise</h2>
+            
             <div class="field">
       <label class="label">Title of Exercise</label>
       <div class="control">
-        <input class="input is-info"  ref="Title" type="text" placeholder="Title of Exercise">
+        <input class="input is-info"  type="text" placeholder="Title of Exercise">
+         
+        
       </div>
     </div>
     <div class="field">
@@ -214,9 +217,13 @@
 .breaktext{
   word-break: break-all;
 }
+
 </style>
 <script>
+import Vue from 'vue';
+import { AutoCompletePlugin } from '@syncfusion/ej2-vue-dropdowns';
 
+Vue.use(AutoCompletePlugin);
 function encodeImageFileAsURL(element) {debugger;
   var file = element.files[0];
   var reader = new FileReader();
@@ -232,7 +239,12 @@ export default {
       return {
        profile:null,
         fileBase64: null,
-        postData:  null
+        postData:  null,
+          waterMark : 'ball',
+      sportsData: ['American Football', 'Badminton', 'Basketball', 'Cricket',
+                'Football', 'Golf', 'Gymnastics',
+                'Hockey', 'Rugby', 'Snooker', 'Tennis'
+            ]
       }
     },
      created(){

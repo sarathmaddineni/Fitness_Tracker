@@ -39,7 +39,7 @@ router.post('/Register', function (req, res) {
 //login user
 router.post('/Login', function (req, res) {
     // console.log(req.body.email);
-    // console.log(req.body.password);
+     console.log(req.body.password);
     Models.User.findOne({"Email":req.body.email}, (err, doc)=>{
         if(!err){
            var response=doc;

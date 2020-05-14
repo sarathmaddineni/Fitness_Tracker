@@ -49,6 +49,8 @@
              <div class="column is-6">
                  <div class="field">
                     <div class="control">
+                        
+                        <ejs-autocomplete :dataSource='sportsData' :placeholder="waterMark"></ejs-autocomplete>
                         <!-- <input class="input is-info" type="text" v-model="searchQuery" placeholder="Search..."> -->
                     </div>
                  </div>
@@ -111,6 +113,9 @@
 </template>
 
 <script>
+import Autocomplete from 'vue2-autocomplete-js'
+// Or
+//var Autocomplete = require('vue2-autocomplete-js');
 import axios from "axios";
 export default {
   name: 'HelloWorld',
@@ -120,7 +125,12 @@ export default {
   data:()=>({
        searchQuery: null,
         column: null,
-        items:  null
+        items:  null,
+          waterMark : 'ball',
+      sportsData: ['American Football', 'Badminton', 'Basketball', 'Cricket',
+                'Football', 'Golf', 'Gymnastics',
+                'Hockey', 'Rugby', 'Snooker', 'Tennis'
+            ]
     }),
   methods:{
       addFriend: function(data){

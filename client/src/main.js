@@ -18,7 +18,9 @@ import ActivateUsers from "./components/activateUsers.vue";
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all.js'
 import VueLoading from 'vuejs-loading-plugin';
+import { AutoCompleteComponent, AutoCompletePlugin } from '@syncfusion/ej2-vue-dropdowns';
 
+Vue.component(AutoCompletePlugin.name, AutoCompleteComponent);
 Vue.use(VueSimpleAlert);
 Vue.use(require('vue-moment'));
 Vue.use(VueLoading, {
